@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = DB::table('users')->paginate(5);
+        $users = DB::table('users')->paginate(1);
 
         if (Auth::user()->role != 'admin') {
             return redirect('/');

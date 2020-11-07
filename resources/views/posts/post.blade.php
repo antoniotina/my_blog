@@ -13,16 +13,18 @@
                     {{ $post->text }}
                     <hr>
                     <div class="d-flex">
-                        @if (Auth::id() == $post->user_id || Auth::user()->role == 'admin')
-                            <form method="POST" action="{{ route('deletepost', $post->id) }}">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger m-1">DELETE</button>
-                            </form>
-                            <a href="{{ url('/u/post/' . $post->id)}}" class="btn btn-primary m-1">UPDATE</a>
-                        @endif
-                        @if (Auth::user()->role == 'moderator')
-                            <a href="{{ url('/u/post/' . $post->id)}}" class="btn btn-primary m-1">UPDATE</a>
+                        @if(!Auth::guest())
+                            @if (Auth::id() == $post->user_id || Auth::user()->role == 'admin')
+                                <form method="POST" action="{{ route('deletepost', $post->id) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger m-1">DELETE</button>
+                                <a href="{{ url('/u/post/' . $post->id)}}" class="btn btn-primary m-1">UPDATE</a>
+                                </form>
+                            @endif
+                            @if (Auth::user()->role == 'moderator' && Auth::id() != $post->user_id)
+                                <a href="{{ url('/u/post/' . $post->id)}}" class="btn btn-primary m-1">UPDATE</a>
+                            @endif
                         @endif
                     </div>
                 </div>
